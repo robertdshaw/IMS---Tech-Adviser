@@ -6,14 +6,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
 
-# Simple logo fix - just use the filename string
 st.set_page_config(
     page_title="Public Interest Infrastructure Assessment",
-    page_icon="IMS_logo.png",  # Just pass the filename as a string
+    page_icon="IMS_logo.png",
     layout="wide",
 )
 
-# CSS styling
 st.markdown(
     """
 <style>
@@ -57,7 +55,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Initialize session state
 if "assessment_data" not in st.session_state:
     st.session_state.assessment_data = {}
 
@@ -140,8 +137,6 @@ def create_trade_off_matrix(selected_tools):
     }
 
     df = pd.DataFrame(tools_data)
-
-    # Highlight selected tools
     df["Selected"] = df["Tool"].isin(selected_tools)
     df["Size"] = df["Selected"].apply(lambda x: 100 if x else 50)
 
@@ -198,7 +193,7 @@ def main():
 
     st.sidebar.header("⚙️ Assessment Configuration")
 
-    # Organization Profile
+    # Org profile
     st.sidebar.subheader("Organization Profile")
     org_name = st.sidebar.text_input("Organization Name", "Your Organization")
 
@@ -218,6 +213,8 @@ def main():
         [
             "East Africa",
             "West Africa",
+            "Central Africa",
+            "Southern Africa",
             "South Asia",
             "Southeast Asia",
             "Latin America",
@@ -244,7 +241,6 @@ def main():
         value="Medium",
     )
 
-    # Value Weights
     st.sidebar.subheader("Value Priorities")
     st.sidebar.markdown("*Adjust based on your mission (must sum to 100%)*")
 
@@ -267,10 +263,10 @@ def main():
 
     tab1, tab2, tab3, tab4 = st.tabs(
         [
-            "📊 Assessment Overview",
-            "🔧 Tool Assessment & Trade-offs",
-            "📋 Recommendations",
-            "📥 Export Report",
+            " Assessment Overview",
+            " Tool Assessment & Trade-offs",
+            " Recommendations",
+            " Export Report",
         ]
     )
 
@@ -445,11 +441,11 @@ def main():
                 ]
 
                 if low_privacy and not high_privacy:
-                    st.warning("⚠️ Your stack lacks privacy-preserving tools")
+                    st.warning("Your stack lacks privacy-preserving tools")
                 elif high_privacy and not low_privacy:
-                    st.info("📍 Limited reach but strong privacy")
+                    st.info("Limited reach but strong privacy")
                 elif high_privacy and low_privacy:
-                    st.success("✓ Balanced portfolio approach")
+                    st.success("Balanced portfolio approach")
 
         with col2:
             if tools:
@@ -565,7 +561,7 @@ def main():
                     float(row["PI Score"].strip("%")) < 50 for row in assessment_data
                 ):
                     st.warning(
-                        "⚠️ Tools with PI Score below 50% extract value from your community through data harvesting"
+                        "Tools with PI Score below 50% extract value from your community through data harvesting"
                     )
 
     with tab3:
@@ -684,17 +680,17 @@ def main():
         with col2:
             st.markdown("### Export Options")
 
-            if st.button("📄 Generate PDF Report", type="primary"):
+            if st.button("Generate PDF Report", type="primary"):
                 st.success(
                     "PDF report generated! (In production, this would download a formatted PDF)"
                 )
 
-            if st.button("📊 Export to CSV"):
+            if st.button("Export to CSV"):
                 st.success(
                     "Data exported to CSV! (In production, this would download assessment data)"
                 )
 
-            if st.button("📧 Email to Team"):
+            if st.button("Email to Team"):
                 st.success(
                     "Report sent to team! (In production, this would send an email)"
                 )
