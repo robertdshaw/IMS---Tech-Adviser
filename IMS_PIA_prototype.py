@@ -6,11 +6,23 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
 
-st.set_page_config(
-    page_title="Public Interest Infrastructure Assessment",
-    page_icon="IMS_logo.png",
-    layout="wide",
-)
+from PIL import Image
+
+# Load the logo image
+try:
+    logo = Image.open("logo2.png")
+    st.set_page_config(
+        page_title="Public Interest Infrastructure Assessment",
+        page_icon=logo,
+        layout="wide",
+    )
+except Exception as e:
+    print(f"Could not load logo: {e}")
+    st.set_page_config(
+        page_title="Public Interest Infrastructure Assessment",
+        page_icon="🏢",  # Fallback emoji
+        layout="wide",
+    )
 
 st.markdown(
     """
@@ -176,19 +188,26 @@ def create_trade_off_matrix(selected_tools):
 
 
 def main():
-    st.markdown(
-        '<h1 class="main-header">🌍 Public Interest Infrastructure Assessment</h1>',
-        unsafe_allow_html=True,
-    )
+    # Simple logo above title
+    try:
+        from PIL import Image
+
+        logo = Image.open("logo.png")
+
+        # Center the logo
+        col1, col2, col3 = st.columns([2, 1, 2])
+        with col2:
+            st.image(logo, width=120)
+    except:
+        pass  # Just skip logo if it fails
 
     st.markdown(
-        """
-    **Evaluate your organization's tech stack against public interest values**
-    
-    This framework helps community media and alternative platforms assess whether their digital tools 
-    align with their values and mission. Based on the experiences of organizations like JamiiAfrica 
-    (Tanzania) and CGNet Swara (India), we'll help you make informed decisions about your technology choices.
-    """
+        '<h1 class="main-header">Public Interest Infrastructure Assessment</h1>\n\n'
+        "**Evaluate your organization's tech stack against public interest values**\n\n"
+        "This framework helps community media and alternative platforms assess whether their digital tools "
+        "align with their values and mission. Based on the experiences of organizations like JamiiAfrica "
+        "(Tanzania) and CGNet Swara (India), we'll help you make informed decisions about your technology choices.",
+        unsafe_allow_html=True,
     )
 
     st.sidebar.header("⚙️ Assessment Configuration")
@@ -281,7 +300,7 @@ def main():
     with tab1:
         st.subheader(f"Assessment Dashboard for {org_name}")
 
-        with st.expander("📖 How to read this dashboard", expanded=True):
+        with st.expander("How to read this dashboard", expanded=False):
             st.markdown(
                 """
             **Overall PI Score**: Your weighted average across all public interest dimensions. 
@@ -374,9 +393,7 @@ def main():
     with tab2:
         st.subheader("Tool Assessment & Trade-off Analysis")
 
-        with st.expander(
-            "📖 Understanding Tool Assessment & Trade-offs", expanded=True
-        ):
+        with st.expander("Understanding Tool Assessment & Trade-offs", expanded=False):
             st.markdown(
                 """
             **Why this matters:**
